@@ -5,8 +5,8 @@ const questionSchema = new Schema({
     authorId: String, // Auto
     title: String,
     content: String,
-    upvotes: Number, // Auto
-    downvotes: Number, // Auto
+    upvotes: [String], // Auto
+    downvotes: [String], // Auto
     resolved: Boolean, // Auto
     correctAnswerId: String // Auto
 });
@@ -61,20 +61,44 @@ exports.list = (perPage, page) => {
     });
 };
 
-// exports.patchQuestion = (id, QuestionData) => {
-//     return new Promise((resolve, reject) => {
-//         Question.findById(id, function (err, Question) {
-//             if (err) reject(err);
-//             for (let i in QuestionData) {
-//                 Question[i] = QuestionData[i];
-//             }
-//             Question.save(function (err, updatedQuestion) {
-//                 if (err) return reject(err);
-//                 resolve(updatedQuestion);
-//             });
-//         });
-//     })
-// };
+exports.upvoteQuestion = (id, userId) => {
+    return new Promise((resolve, reject) => {
+        Question.findById(id, function (err, question) {
+            if (err) reject(err);
+
+            if (question.downvotes.includes(userId)) {
+                var downvotes = Object.assign([], question.downvotes)
+                question.downvotes = downvotes.filter(vote => vote != userId);
+            }
+            if (!question.upvotes.includes(userId)) {
+                question.upvotes.push(userId);
+            }
+            question.save(function (err, updatedQuestion) {
+                if (err) return reject(err);
+                resolve(updatedQuestion);
+            });
+        });
+    })
+};
+
+exports.downvoteQuestion = (id, userId) => {
+    return new Promise((resolve, reject) => {
+        Question.findById(id, function (err, question) {
+            if (err) reject(err);
+            if (question.upvotes.includes(userId)) {
+                var upvotes = Object.assign([], question.upvotes)
+                question.upvotes = upvotes.filter(vote => vote != userId);
+            }
+            if (!question.downvotes.includes(userId)) {
+                question.downvotes.push(userId);
+            }
+            question.save(function (err, updatedQuestion) {
+                if (err) return reject(err);
+                resolve(updatedQuestion);
+            });
+        });
+    })
+};
 
 // exports.removeById = (QuestionId) => {
 //     return new Promise((resolve, reject) => {

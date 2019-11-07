@@ -3,8 +3,8 @@ const QuestionModel = require('../models/questions.model');
 exports.insert = (req, res) => {
     // TODO: Offesive words censoring
     req.body.authorId = req.jwt.userId;
-    req.body.upvotes = 0;
-    req.body.downvotes = 0;
+    req.body.upvotes = [];
+    req.body.downvotes = [];
     req.body.resolved = false;
     req.body.correctAnswerId = null;
 
@@ -45,19 +45,19 @@ exports.getByAuthorId = (req, res) => {
         });
 };
 
-// exports.patchById = (req, res) => {
-//     if (req.body.password) {
-//         let salt = crypto.randomBytes(16).toString('base64');
-//         let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
-//         req.body.password = salt + "$" + hash;
-//     }
+exports.upvoteQuestion = (req, res) => {
+    QuestionModel.upvoteQuestion(req.params.id, req.jwt.userId)
+        .then((result) => {
+            res.status(204).send({});
+        });
+};
 
-//     QuestionModel.patchQuestion(req.params.userId, req.body)
-//         .then((result) => {
-//             res.status(204).send({});
-//         });
-
-// };
+exports.downvoteQuestion = (req, res) => {
+    QuestionModel.downvoteQuestion(req.params.id, req.jwt.userId)
+        .then((result) => {
+            res.status(204).send({});
+        });
+};
 
 // exports.removeById = (req, res) => {
 //     QuestionModel.removeById(req.params.userId)
