@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qna_flutter/views/question/answer.dart';
 
 class QuestionScreen extends StatelessWidget {
   @override
@@ -24,15 +25,7 @@ class QuestionScreen extends StatelessWidget {
             ),
           ),
           Divider(),
-        for (int i in [2,3,5,6,7,4,4,4,4,6])
-          ListTile(
-            title: Text("Answer"),
-            subtitle: Text("Answer"),
-            trailing: IconButton(
-              icon: Icon(Icons.check),
-              onPressed: () {},
-            ),
-          ),
+        Answer(),
         ],
       ),
     );
