@@ -16,7 +16,15 @@ exports.insert = (req, res) => {
         AnswerModel.createAnswer(req.body)
         .then((result) => {
             res.status(201).send({ id: result._id });
-        }).then(()=>{notification.answerAdded(req.body.questionId)});
+        }).then(()=>{notification.answerAdded(req.body.questionId)})
+        .then(
+            ()=>{
+                QuestionModel.findById(req.body.questionId)
+                .then((result)=>{
+                    notification.myQuestionAnswered(req.body.questionId,result.authorId)
+                })
+            }
+        );
     }else{
         res.status(201).send({});
     }

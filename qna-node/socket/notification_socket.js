@@ -16,7 +16,12 @@ exports.sendAllQuestions = ()=>{
 }
 
 exports.answerAdded = (questionId)=>{
+    console.log('answer added for '+ questionId);
     global.nsp.emit('answer-added',questionId);
+}
+
+exports.myQuestionAnswered=(questionId,authorId)=>{
+    global.nsp.emit('my-question-answered',{questionId:questionId,authorId:authorId});
 }
 
 // exports.sendNewQuestion = (questionId,userId)=>{
