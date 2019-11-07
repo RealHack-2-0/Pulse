@@ -6,6 +6,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // bottomNavigationBar: BottomNavigationBar(),
       appBar: AppBar(title: Text("Stack Overflow Demo"),
       actions: <Widget>[
 
