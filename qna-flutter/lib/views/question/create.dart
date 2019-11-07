@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:qna_flutter/logic/authentication.dart';
+import 'package:qna_flutter/logic/questions.dart';
 import 'package:qna_flutter/views/helpers/alert.dart';
-import 'package:qna_flutter/views/helpers/app_navigator.dart';
 
-import '../splash.dart';
-
-class RegisterView extends StatelessWidget {
+class CreateQuestionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,19 +12,19 @@ class RegisterView extends StatelessWidget {
         title: Text("Create Account"),
         centerTitle: true,
       ),
-      body: RegisterForm(),
+      body: CreateQuestionForm(),
     );
   }
 }
 
-class RegisterForm extends StatefulWidget {
-  RegisterForm();
+class CreateQuestionForm extends StatefulWidget {
+  CreateQuestionForm();
 
   @override
-  _RegisterFormState createState() => _RegisterFormState();
+  _CreateQuestionFormState createState() => _CreateQuestionFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm>
+class _CreateQuestionFormState extends State<CreateQuestionForm>
     with AutomaticKeepAliveClientMixin {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   bool _isSaving;
@@ -59,16 +56,10 @@ class _RegisterFormState extends State<RegisterForm>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _buildTitle("First Name"),
-                            _firstName,
-                            _buildTitle("Last Name"),
-                            _lastName,
-                            _buildTitle("Email"),
-                            _email,
-                            _buildTitle("Password"),
-                            _password,
-                            _buildTitle("Confirm Password"),
-                            _confirmPassword,
+                            _buildTitle("Title"),
+                            _title,
+                            _buildTitle("Content"),
+                            _content,
                           ],
                         ),
                       ),
@@ -82,7 +73,7 @@ class _RegisterFormState extends State<RegisterForm>
                           child: RaisedButton(
                             color: Colors.indigo,
                             textColor: Colors.white,
-                            child: Text("Register"),
+                            child: Text("CreateQuestion"),
                             onPressed: () => _handleFormSubmit(),
                           ),
                         ),
@@ -106,83 +97,33 @@ class _RegisterFormState extends State<RegisterForm>
           );
   }
 
-  Widget get _firstName => Padding(
+  Widget get _title => Padding(
         padding: const EdgeInsets.all(8.0),
         child: FormBuilderTextField(
           validators: [
             FormBuilderValidators.required(),
-            FormBuilderValidators.minLength(4),
           ],
-          attribute: "firstName",
+          attribute: "title",
           maxLines: 1,
           decoration: InputDecoration(
-              helperText: "First Name",
-              hintText: "First",
+              helperText: "Title",
+              hintText: "Good title for your question",
               border: OutlineInputBorder()),
         ),
       );
 
-  Widget get _lastName => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FormBuilderTextField(
-          validators: [
-            FormBuilderValidators.required(),
-            FormBuilderValidators.minLength(4),
-          ],
-          attribute: "lastName",
-          maxLines: 1,
-          decoration: InputDecoration(
-              helperText: "Last Name",
-              hintText: "Last",
-              border: OutlineInputBorder()),
-        ),
-      );
-
-  Widget get _email => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FormBuilderTextField(
-          validators: [
-            FormBuilderValidators.required(),
-            FormBuilderValidators.email(),
-          ],
-          keyboardType: TextInputType.emailAddress,
-          attribute: "email",
-          maxLines: 1,
-          decoration: InputDecoration(
-              helperText: "Email",
-              hintText: "email@website.com",
-              border: OutlineInputBorder()),
-        ),
-      );
-
-  Widget get _password => Padding(
+  Widget get _content => Padding(
         padding: const EdgeInsets.all(8.0),
         child: FormBuilderTextField(
           validators: [
             FormBuilderValidators.required(),
           ],
-          obscureText: true,
-          attribute: "password",
+          keyboardType: TextInputType.phone,
+          attribute: "content",
           maxLines: 1,
           decoration: InputDecoration(
-              helperText: "Password",
-              hintText: "Password",
-              border: OutlineInputBorder()),
-        ),
-      );
-
-  Widget get _confirmPassword => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FormBuilderTextField(
-          validators: [
-            FormBuilderValidators.required(),
-          ],
-          obscureText: true,
-          maxLines: 1,
-          attribute: "confirm_password",
-          decoration: InputDecoration(
-              helperText: "Confirm Password",
-              hintText: "Confirm Password",
+              helperText: "Content",
+              hintText: "Ask your question here...",
               border: OutlineInputBorder()),
         ),
       );
@@ -200,28 +141,19 @@ class _RegisterFormState extends State<RegisterForm>
 
   void _handleFormSubmit() async {
     _fbKey.currentState.save();
-    if (_fbKey.currentState.value['password'] !=
-        _fbKey.currentState.value['confirm_password']) {
-      Alert.showAlertBox(context, "Mismatching passwords");
-    }
     if (_fbKey.currentState.validate()) {
       setState(() {
         _isSaving = true;
       });
 
       try {
-        await Authentication.signup(
-            _fbKey.currentState.value['firstName'],
-            _fbKey.currentState.value['lastName'],
-            _fbKey.currentState.value['email'],
-            _fbKey.currentState.value['password'], (e) {
-          if (mounted) {
-            Alert.showAlertBox(context, e);
-          }
-        });
-        AppNavigator.pushAsFirst(context, (_) => SplashScreen());
+        await Questions.create(
+          _fbKey.currentState.value['title'],
+          _fbKey.currentState.value['content'],
+        );
+        Navigator.pop(context);
       } catch (e) {
-        Alert.showAlertBox(context, "Registration failed");
+        Alert.showAlertBox(context, e);
       }
 
       if (mounted) {

@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<String> _getCurrentEmail() async {
-    return "null";
+    return null;
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class ServerEndpoints {
-  static const EMULATOR_HOST_IP_ADDRESS = 'http://10.0.2.2';
+  static const EMULATOR_HOST_IP_ADDRESS = 'http://10.0.2.2:3600';
   static const NGROK_SERVER_ADDRESS = "https://f027b58b.ngrok.io";
   static const WEBSITE_ADDRESS = 'http://www.polyc.com';
   static const LOGIN = "auth/";
@@ -19,7 +19,7 @@ class ServerEndpoints {
   }
 
   ServerEndpoints({String serverUrl})
-      : _serverUrl = serverUrl ?? NGROK_SERVER_ADDRESS {
+      : _serverUrl = serverUrl ?? EMULATOR_HOST_IP_ADDRESS {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (Options options) async {
