@@ -1,34 +1,35 @@
 const mongoose = require('../../common/services/mongoose.service').mongoose;
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    authorId: String, // Auto
+const answerSchema = new Schema({
+    authorId: String,
+    questionId: String,
     content: String,
-    isCorrect: Boolean, // Auto
-    correctAnswerId: String // Auto
+    isCorrect: Boolean
 });
 
-userSchema.virtual('id').get(function () {
+answerSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
 // Ensure virtual fields are serialised.
-userSchema.set('toJSON', {
+answerSchema.set('toJSON', {
     virtuals: true
 });
 
-userSchema.findById = function (cb) {
-    return this.model('Users').find({ id: this.id }, cb);
+answerSchema.findById = function (cb) {
+    return this.model('Answers').find({ id: this.id }, cb);
 };
 
-const User = mongoose.model('Users', userSchema);
+const Answer = mongoose.model('Answers', answerSchema);
 
 
-exports.findByEmail = (email) => {
-    return User.find({ email: email });
+exports.findByQuestionId = (questionId) => {
+    return Answer.find({ questionId: questionId });
 };
+
 exports.findById = (id) => {
-    return User.findById(id)
+    return Answer.findById(id)
         .then((result) => {
             result = result.toJSON();
             delete result._id;
@@ -37,45 +38,58 @@ exports.findById = (id) => {
         });
 };
 
-exports.createUser = (userData) => {
-    const user = new User(userData);
-    return user.save();
+exports.createAnswer = (answerData) => {
+    const answer = new Answer(answerData);
+    return answer.save();
 };
 
-exports.list = (perPage, page) => {
+exports.markAsAnswer = (id) => {
     return new Promise((resolve, reject) => {
-        User.find()
-            .limit(perPage)
-            .skip(perPage * page)
-            .exec(function (err, users) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(users);
-                }
-            })
-    });
-};
-
-exports.patchUser = (id, userData) => {
-    return new Promise((resolve, reject) => {
-        User.findById(id, function (err, user) {
+        Answer.findById(id, function (err, answer) {
             if (err) reject(err);
-            for (let i in userData) {
-                user[i] = userData[i];
-            }
-            user.save(function (err, updatedUser) {
+            answer.isCorrect = true;
+            answer.save(function (err, updatedAnswer) {
                 if (err) return reject(err);
-                resolve(updatedUser);
+                resolve(updatedAnswer);
             });
         });
     })
-
 };
 
-exports.removeById = (userId) => {
+// exports.list = (perPage, page) => {
+//     return new Promise((resolve, reject) => {
+//         Answer.find()
+//             .limit(perPage)
+//             .skip(perPage * page)
+//             .exec(function (err, answers) {
+//                 if (err) {
+//                     reject(err);
+//                 } else {
+//                     resolve(answers);
+//                 }
+//             })
+//     });
+// };
+
+// exports.patchAnswer = (id, answerData) => {
+//     return new Promise((resolve, reject) => {
+//         Answer.findById(id, function (err, answer) {
+//             if (err) reject(err);
+//             for (let i in answerData) {
+//                 answer[i] = answerData[i];
+//             }
+//             answer.save(function (err, updatedAnswer) {
+//                 if (err) return reject(err);
+//                 resolve(updatedAnswer);
+//             });
+//         });
+//     })
+
+// };
+
+exports.removeById = (answerId) => {
     return new Promise((resolve, reject) => {
-        User.remove({ _id: userId }, (err) => {
+        Answer.remove({ _id: answerId }, (err) => {
             if (err) {
                 reject(err);
             } else {

@@ -1,18 +1,19 @@
-const UserModel = require('../models/answers.model');
-const crypto = require('crypto');
+const AnswerModel = require('../models/answers.model');
 
 exports.insert = (req, res) => {
-    let salt = crypto.randomBytes(16).toString('base64');
-    let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
-    req.body.password = salt + "$" + hash;
-    req.body.permissionLevel = 1;
-    UserModel.createUser(req.body)
+    // TODO: Offesive words censoring
+    req.body.authorId = req.jwt.userId;
+    req.body.isCorrect = false;
+
+    AnswerModel.createAnswer(req.body)
         .then((result) => {
             res.status(201).send({ id: result._id });
         });
 };
 
 exports.list = (req, res) => {
+    questionId = res.body.questionId;
+
     let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
     let page = 0;
     if (req.query) {
@@ -21,35 +22,45 @@ exports.list = (req, res) => {
             page = Number.isInteger(req.query.page) ? req.query.page : 0;
         }
     }
-    UserModel.list(limit, page)
+    AnswerModel.list(limit, page, questionId)
         .then((result) => {
             res.status(200).send(result);
         })
 };
 
+// ! id(question id) field required
 exports.getById = (req, res) => {
-    UserModel.findById(req.params.userId)
+    AnswerModel.findById(req.params.id)
         .then((result) => {
             res.status(200).send(result);
         });
 };
-exports.patchById = (req, res) => {
-    if (req.body.password) {
-        let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
-        req.body.password = salt + "$" + hash;
-    }
 
-    UserModel.patchUser(req.params.userId, req.body)
+// ! id(author id) field required
+exports.getByAuthorId = (req, res) => {
+    AnswerModel.findByAuthorId(req.params.id)
         .then((result) => {
-            res.status(204).send({});
+            res.status(200).send(result);
         });
-
 };
 
-exports.removeById = (req, res) => {
-    UserModel.removeById(req.params.userId)
+exports.upvoteAnswer = (req, res) => {
+    AnswerModel.upvoteAnswer(req.params.id, req.jwt.userId)
         .then((result) => {
             res.status(204).send({});
         });
 };
+
+exports.downvoteAnswer = (req, res) => {
+    AnswerModel.downvoteAnswer(req.params.id, req.jwt.userId)
+        .then((result) => {
+            res.status(204).send({});
+        });
+};
+
+// exports.removeById = (req, res) => {
+//     AnswerModel.removeById(req.params.userId)
+//         .then((result) => {
+//             res.status(204).send({});
+//         });
+// };

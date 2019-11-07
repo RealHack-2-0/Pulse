@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const AuthorizationRouter = require('./authorization/routes.config');
 const UsersRouter = require('./users/routes.config');
 const QuestionsRouter = require('./questions/routes.config');
+const AnswersRouter = require('./answers/routes.config')
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
 QuestionsRouter.routesConfig(app);
+AnswersRouter.routesConfig(app);
 
 
 app.listen(config.port, function () {
