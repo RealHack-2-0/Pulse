@@ -41,6 +41,8 @@ server.listen(config.port, function () {
 
 const nsp = io.of('/pulse');
 
+nsp.on('')
+
 global.nsp = nsp;
 nsp.on('connection',function(socket){
     socket.join('pulse');
