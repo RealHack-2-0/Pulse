@@ -42,7 +42,7 @@ const nsp = io.of('/pulse-group');
 nsp.on('connection',function(socket){
     socket.join('pulse');
     setInterval(()=>{
-        io.in('pulse').send('message from pulse');
+        io.in('pulse').emit('pulse-message','message from pulse');
     },1000)
 })
 
