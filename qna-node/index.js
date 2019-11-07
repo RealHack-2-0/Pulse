@@ -37,12 +37,13 @@ server.listen(config.port, function () {
     console.log('app listening at port %s', config.port);
 });
 
+const nsp = io.of('/pulse');
 
 
-io.on('connection',function(socket){
+nsp.on('connection',function(socket){
     socket.join('pulse');
     setInterval(()=>{
-        io.in('pulse').emit('msg-event','message from pulse');
+        nsp.emit('msg-event','message from pulse');
     },1000)
 })
 
