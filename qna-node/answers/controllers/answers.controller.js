@@ -2,6 +2,7 @@ const AnswerModel = require('../models/answers.model');
 const QuestionModel = require('../../questions/models/questions.model');
 const BadWords = require('bad-words');
 var wordsFilter = new BadWords();
+const notification = require('../../socket/notification_socket');
 
 
 exports.insert = (req, res) => {
@@ -15,7 +16,7 @@ exports.insert = (req, res) => {
         AnswerModel.createAnswer(req.body)
         .then((result) => {
             res.status(201).send({ id: result._id });
-        });
+        }).then(()=>{notification.answerAdded(req.body.questionId)});
     }else{
         res.status(201).send({});
     }

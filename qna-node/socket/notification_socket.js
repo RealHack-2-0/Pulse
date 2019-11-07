@@ -15,12 +15,16 @@ exports.sendAllQuestions = ()=>{
     
 }
 
-exports.sendNewQuestion = (questionId,userId)=>{
-    console.log('sending new question');
-    QuestionModel.findById(id)
-    .then((results)=>{
-        global.nsp.emit('refreshed_question',{userId:userId,question:results});
-    }
-
-    )
+exports.answerAdded = (questionId)=>{
+    global.nsp.emit('answer-added',questionId);
 }
+
+// exports.sendNewQuestion = (questionId,userId)=>{
+//     console.log('sending new question');
+//     QuestionModel.findById(id)
+//     .then((results)=>{
+//         global.nsp.emit('refreshed_question',{userId:userId,question:results});
+//     }
+
+//     )
+// }
