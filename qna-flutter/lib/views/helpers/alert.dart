@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class Alert {
-  static Future<void> showAlertBox(BuildContext context, String message) async {
+  static Future<void> showAlertBox(
+      BuildContext context, dynamic message) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: Text(message),
+        title: Text(message.toString()),
         actions: <Widget>[
           CupertinoDialogAction(
             child: Text("Close"),

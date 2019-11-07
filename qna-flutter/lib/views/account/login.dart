@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:qna_flutter/logic/authentication.dart';
 import 'package:qna_flutter/views/helpers/alert.dart';
 import 'package:qna_flutter/views/helpers/app_navigator.dart';
+import 'package:qna_flutter/views/home/home.dart';
 import 'package:qna_flutter/views/splash.dart';
 
 import 'register.dart';
@@ -155,7 +156,7 @@ class _LoginFormState extends State<LoginForm> {
           processing = false;
         });
         if (isLoggedIn) {
-          AppNavigator.pushAsFirst(context, (_) => SplashScreen());
+          AppNavigator.pushAsFirst(context, (_) => HomePage());
         }
       }
     }

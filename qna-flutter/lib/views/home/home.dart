@@ -1,26 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:qna_flutter/logic/models/question_model.dart';
+import 'package:qna_flutter/logic/questions.dart';
+import 'package:qna_flutter/views/helpers/handled_builders.dart';
 import 'package:qna_flutter/views/home/question.dart';
+import 'package:qna_flutter/views/question/create.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Stack Overflow Demo"),
-      actions: <Widget>[
-
-      ],),
-      drawer: Drawer(
-        
+      appBar: AppBar(
+        title: Text("Stack Overflow Demo"),
+        actions: <Widget>[],
       ),
+      drawer: Drawer(),
       body: Container(
-        child:ListView(
-          children: <Widget>[
-            QuestionView(title: "How to add a image to Firebase?", subtitle: "10 minutes ago", votes: 43),
-            QuestionView(title: "How to center a widget in Flutter?", subtitle: "5 seconds ago", votes: 8),
-            QuestionView(title: "Wauestion", subtitle: "10 hours ago", votes: 9)
-          ],
-        )
+        child: HandledFutureBuilder<List<QuestionModel>>(
+          future: Questions.getQuestions(),
+          builder: (context, questions) {
+            return ListView.builder(
+                itemBuilder: (_, i) => QuestionView(question: questions[i]),
+                itemCount: questions.length);
+          },
+        ),
       ),
-    );  
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          await Navigator.push(
+              context, MaterialPageRoute(builder: (_) => CreateQuestionView()));
+          setState(() {});
+        },
+      ),
+    );
   }
 }

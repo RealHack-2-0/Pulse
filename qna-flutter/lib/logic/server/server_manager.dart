@@ -4,7 +4,7 @@ import 'server_endpoints.dart';
 import 'server_exceptions.dart';
 
 class ServerManager {
-  static const String _serverUrl = ServerEndpoints.NGROK_SERVER_ADDRESS;
+  static const String _serverUrl = ServerEndpoints.EMULATOR_HOST_IP_ADDRESS;
   static ServerManager _repository;
   final ServerEndpoints _serverEndPoints;
 
