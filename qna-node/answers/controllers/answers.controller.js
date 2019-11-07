@@ -94,7 +94,7 @@ exports.markAsAnswer = (req, res) => {
                                 QuestionModel.addCorrectAnswer(answer.questionId, req.body.id))
                             .then((result) => {
                                 res.status(204).send({});
-                            });
+                            }).then(()=>{notification.sendAllQuestions()});
                     }
                 })
 

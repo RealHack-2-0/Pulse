@@ -5,7 +5,7 @@ const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-// const QuestionModel = 
+const QuestionModel = require('./questions/models/questions.model');
 
 
 
