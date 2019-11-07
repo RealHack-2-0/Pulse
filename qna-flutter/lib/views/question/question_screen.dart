@@ -25,8 +25,16 @@ class QuestionScreen extends StatelessWidget {
             ),
           ),
           Divider(),
-        Answer(),
-        Answer(),
+          Answer(
+            name: "Anju Chamantha",
+            content:
+                "This makes it clear that the layers of a plane are still considered to be different environments or realms within a single plane.",
+          ),
+          Answer(
+            name: "Sunera Avinash",
+            content:
+                "This makes it clear that the layers of a plane are still considered to be different environments or realms within a single plane.",
+          ),
         ],
       ),
     );
