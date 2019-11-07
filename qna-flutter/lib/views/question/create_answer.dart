@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:adhara_socket_io/adhara_socket_io.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:qna_flutter/logic/answers.dart';
+import 'package:qna_flutter/logic/server/server_endpoints.dart';
 import 'package:qna_flutter/views/helpers/alert.dart';
 
 class CreateAnswerView extends StatelessWidget {
@@ -13,7 +18,7 @@ class CreateAnswerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Account"),
+        title: Text("Create Answer"),
         centerTitle: true,
       ),
       body: CreateAnswerForm(questionId),
@@ -35,10 +40,35 @@ class _CreateAnswerFormState extends State<CreateAnswerForm>
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   bool _isSaving;
 
+  void _websocket() async {
+    final manager = SocketIOManager();
+    final socket = await manager.createInstance(SocketOptions(
+        ServerEndpoints.EMULATOR_HOST_IP_ADDRESS,
+        nameSpace: "/pulse",
+        enableLogging: true,
+        transports: [Transports.POLLING]));
+    socket.on("answer-added", (data) {
+      if (data == widget.questionId) {
+        Flushbar(
+          title: "Alert",
+          message: "Answer was submitted just now for this question",
+          duration: Duration(seconds: 3),
+        )..show(context);
+      }
+    });
+    socket.connect();
+  }
+
   @override
   void initState() {
     _isSaving = false;
+    _websocket();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -109,7 +139,6 @@ class _CreateAnswerFormState extends State<CreateAnswerForm>
           ],
           keyboardType: TextInputType.phone,
           attribute: "content",
-          maxLines: 1,
           decoration: InputDecoration(
               helperText: "Content",
               hintText: "Ask your Answer here...",

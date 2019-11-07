@@ -9,28 +9,93 @@ class QuestionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        child: Text("${question.votes}"),
+    return InkWell(
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      question.title,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "${question.content}",
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.thumb_up,
+                          color: question.hasUpvoted ? Colors.green : null,
+                        ),
+                      ),
+                      Text("${question.upvotes.length}"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.thumb_down,
+                          color: question.hasDownvoted ? Colors.red : null,
+                        ),
+                      ),
+                      Text("${question.downvotes.length}"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: question.resolved ? Colors.green : Colors.black,
+              width: double.infinity,
+              height: 5,
+            )
+          ],
+        ),
       ),
-      title: Text(question.title),
-      subtitle: Text(question.content),
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => QuestionScreen(
-              questionId: question.id,
-            ),
-          ),
-        );
+            context,
+            MaterialPageRoute(
+                builder: (_) => QuestionScreen(
+                      questionId: question.id,
+                    )));
       },
-      // trailing: Row(
-      //   mainAxisSize: MainAxisSize.min,
-      //   children: <Widget>[
-      //   IconButton(icon: Icon(Icons.arrow_upward), onPressed: (){},),
-      //   IconButton(icon: Icon(Icons.arrow_downward), onPressed: (){},)
-      // ],),
     );
+
+    //  ListTile(
+    //   leading: CircleAvatar(
+    //     child: Text("${question.votes}"),
+    //   ),
+    //   title: Text(question.title),
+    //   subtitle: Text(question.content),
+    //   onTap: () {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (_) => QuestionScreen(
+    //           questionId: question.id,
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

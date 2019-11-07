@@ -71,20 +71,6 @@ class ServerManager {
       _serverEndPoints.authorizationToken = response.data['accessToken'];
       userId = response.data['id'];
 
-      final manager = SocketIOManager();
-      final socket = await manager.createInstance(SocketOptions("$_serverUrl",
-          nameSpace: "/pulse",
-          enableLogging: true,
-          transports: [Transports.POLLING]));
-
-      socket.onConnect((s) {
-        print("Conntection:::::::: $s");
-      });
-      socket.on("msg-event", (data) {
-        print("NEWS: $data");
-      });
-      socket.connect();
-
       print("User: $userId");
 
       print("User $email logged in.");

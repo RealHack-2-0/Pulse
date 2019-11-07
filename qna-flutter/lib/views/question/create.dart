@@ -9,7 +9,7 @@ class CreateQuestionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Account"),
+        title: Text("Create Question"),
         centerTitle: true,
       ),
       body: CreateQuestionForm(),
@@ -120,7 +120,6 @@ class _CreateQuestionFormState extends State<CreateQuestionForm>
           ],
           keyboardType: TextInputType.phone,
           attribute: "content",
-          maxLines: 1,
           decoration: InputDecoration(
               helperText: "Content",
               hintText: "Ask your question here...",

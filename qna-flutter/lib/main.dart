@@ -10,10 +10,9 @@ class MyApp extends StatelessWidget {
       title: 'qna_flutter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.indigo,
-        accentColor: Colors.indigo,
-        scaffoldBackgroundColor: Colors.white,
-      ),
+          primaryColor: Colors.indigo,
+          accentColor: Colors.indigo,
+          appBarTheme: AppBarTheme(elevation: 0)),
       home: SplashScreen(),
     );
   }

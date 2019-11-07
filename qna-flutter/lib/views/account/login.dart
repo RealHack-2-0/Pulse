@@ -13,7 +13,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Account"),
+        title: Text("Login"),
         centerTitle: true,
       ),
       body: LoginForm(),

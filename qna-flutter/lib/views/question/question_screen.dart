@@ -28,40 +28,75 @@ class _QuestionScreenState extends State<QuestionScreen> {
             ),
             body: ListView(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    question.title,
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    question.content,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    RaisedButton(
-                      color: question.hasUpvoted ? Colors.amber : null,
-                      onPressed: () async {
-                        await Answers.upvote(question.id);
-                        setState(() {});
-                      },
-                      child: Text("Upvote"),
+                ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      question.title,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                    RaisedButton(
-                      color: question.hasDownvoted ? Colors.amber : null,
-                      onPressed: () async {
-                        await Answers.downvote(question.id);
-                        setState(() {});
-                      },
-                      child: Text("Downvote"),
-                    )
-                  ],
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 25, 10),
+                    child: Text(
+                      "@" + question.authorId,
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: Text(
+                      question.content,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400, color: Colors.blueGrey),
+                    ),
+                  ),
+                ),
+                Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: FlatButton.icon(
+                            color: question.hasUpvoted
+                                ? Colors.amber
+                                : Colors.grey[200],
+                            icon: Icon(Icons.thumb_up),
+                            label: Text("${question.upvotes.length}"),
+                            onPressed: () async {
+                              await Answers.upvote(question.id);
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: FlatButton.icon(
+                            color: question.hasDownvoted
+                                ? Colors.amber
+                                : Colors.grey[200],
+                            icon: Icon(Icons.thumb_down),
+                            label: Text("${question.downvotes.length}"),
+                            onPressed: () async {
+                              await Answers.downvote(question.id);
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Divider(),
                 HandledFutureBuilder<List<AnswerModel>>(
@@ -69,6 +104,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     builder: (context, answers) {
                       return Column(
                         children: <Widget>[
+                          Text("${answers.length} Answers",
+                              textAlign: TextAlign.center),
                           for (AnswerModel answer in answers)
                             ListTile(
                               leading: CircleAvatar(
@@ -117,3 +154,43 @@ class _QuestionScreenState extends State<QuestionScreen> {
         });
   }
 }
+
+// class Answer extends StatelessWidget {
+//   final String name;
+//   final String content;
+//   Answer({@required this.name, @required this.content});
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: <Widget>[
+//         Padding(
+//           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+//           child: ListTile(
+//             leading: CircleAvatar(
+//               child: Text("${name[0]}"),
+//             ),
+//             title: Text("$name"),
+//           ),
+//         ),
+//         Padding(
+//             padding: const EdgeInsets.fromLTRB(75, 0, 20, 5),
+//             child: Text("$content")),
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.end,
+//           children: <Widget>[
+//             FlatButton.icon(
+//               icon: Icon(Icons.check),
+//               shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadiusDirectional.circular(20),
+//               ),
+//               color: Colors.grey[200],
+//               label: Text("Mark as correct"),
+//               onPressed: () {},
+//             ),
+//           ],
+//         ),
+//         Divider(),
+//       ],
+//     );
+//   }
+// }
