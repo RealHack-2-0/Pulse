@@ -66,9 +66,17 @@ class QuestionView extends StatelessWidget {
       ),
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => QuestionScreen(title: "For the purposes of the banishment spell the Nine Hells is a single plane",
-             content:"Most of the Outer Planes include a number of distinct environments or realms. These realms are often imagined and depicted as a stack of related parts of the same plane, so travelers refer to them as layers. For example, Mount Celestia resembles a seven-tiered layer cake, the Nine Hells has nine layers, and the Abyss has a seemingly endless number of layers.",
-             upVotes: 9000,downVotes: 5,author:"Sasindu Dilshara")));
+            context,
+            MaterialPageRoute(
+                builder: (_) => QuestionScreen(
+                    title:
+                        "For the purposes of the banishment spell the Nine Hells is a single plane",
+                    content:
+                        "Most of the Outer Planes include a number of distinct environments or realms. These realms are often imagined and depicted as a stack of related parts of the same plane, so travelers refer to them as layers. For example, Mount Celestia resembles a seven-tiered layer cake, the Nine Hells has nine layers, and the Abyss has a seemingly endless number of layers.",
+                    upVotes: 9000,
+                    downVotes: 5,
+                    author: "Sasindu Dilshara",
+                    numberOfAnswers: 3)));
       },
     );
   }

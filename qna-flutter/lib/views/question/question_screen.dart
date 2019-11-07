@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "answer.dart";
 
 class QuestionScreen extends StatelessWidget {
   final String title;
@@ -6,6 +7,7 @@ class QuestionScreen extends StatelessWidget {
   final int downVotes;
   final int upVotes;
   final String author;
+  final int numberOfAnswers;
 
   const QuestionScreen(
       {Key key,
@@ -13,7 +15,8 @@ class QuestionScreen extends StatelessWidget {
       this.content,
       this.upVotes,
       this.downVotes,
-      this.author})
+      this.author,
+      this.numberOfAnswers})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -59,7 +62,7 @@ class QuestionScreen extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                                  child: Padding(
+                  child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FlatButton.icon(
                       color: Colors.grey[200],
@@ -70,7 +73,7 @@ class QuestionScreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                                  child: Padding(
+                  child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FlatButton.icon(
                       color: Colors.grey[200],
@@ -82,8 +85,25 @@ class QuestionScreen extends StatelessWidget {
                 ),
               ],
             ),
-          )
-
+          ),
+          Text("$numberOfAnswers Answers", textAlign: TextAlign.center),
+          Divider(),
+          Answer(
+              name: "Anju Chamantha",
+              content:
+                  "The answer I guess was this has to b maintain asa list or a array. So function must be not null"),
+          Answer(
+              name: "Anju Chamantha",
+              content:
+                  "The answer I guess was this has to b maintain asa list or a array. So function must be not null"),
+          Answer(
+              name: "Anju Chamantha",
+              content:
+                  "The answer I guess was this has to b maintain asa list or a array. So function must be not null"),
+          Answer(
+              name: "Anju Chamantha",
+              content:
+                  "The answer I guess was this has to b maintain asa list or a array. So function must be not null")
         ],
       ),
     );
