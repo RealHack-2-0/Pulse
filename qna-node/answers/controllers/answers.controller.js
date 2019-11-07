@@ -8,12 +8,19 @@ exports.insert = (req, res) => {
     // TODO: Offesive words censoring
     req.body.authorId = req.jwt.userId;
     req.body.isCorrect = false;
-    req.body.content = wordsFilter.clean(req.body.content)
 
-    AnswerModel.createAnswer(req.body)
+    var filteredContent =  wordsFilter.clean(req.body.content);
+
+    if(req.body.content == filteredContent){
+        AnswerModel.createAnswer(req.body)
         .then((result) => {
             res.status(201).send({ id: result._id });
         });
+    }else{
+        res.status(201).send({});
+    }
+
+    
 };
 
 exports.list = (req, res) => {

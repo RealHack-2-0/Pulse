@@ -10,13 +10,20 @@ exports.insert = (req, res) => {
     req.body.downvotes = [];
     req.body.resolved = false;
     req.body.correctAnswerId = null;
-    req.body.content = wordsFilter.clean(req.body.content);
-    req.body.title = wordsFilter.clean(req.body.title)
+    var filteredContent = wordsFilter.clean(req.body.content);
+    var filteredTitle = wordsFilter.clean(req.body.title)
 
-    QuestionModel.createQuestion(req.body)
+    if((filteredContent == req.body.content) &&(filteredTitle == req.body.title)){
+        QuestionModel.createQuestion(req.body)
         .then((result) => {
             res.status(201).send({ id: result._id });
         });
+    }else{
+        res.status(201).send({});
+    }
+
+
+    
 };
 
 exports.list = (req, res) => {
