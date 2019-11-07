@@ -1,11 +1,14 @@
 const AnswerModel = require('../models/answers.model');
 const QuestionModel = require('../../questions/models/questions.model');
+const BadWords = require('bad-words');
+var wordsFilter = new BadWords();
 
 
 exports.insert = (req, res) => {
     // TODO: Offesive words censoring
     req.body.authorId = req.jwt.userId;
     req.body.isCorrect = false;
+    req.body.content = wordsFilter.clean(req.body.content)
 
     AnswerModel.createAnswer(req.body)
         .then((result) => {

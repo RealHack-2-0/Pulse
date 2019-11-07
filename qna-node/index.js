@@ -1,5 +1,5 @@
 const config = require('./common/config/env.config.js');
-
+const notification = require('./socket/notification_socket');
 const express = require('express');
 const app = express();
 var server = require('http').Server(app);
@@ -37,14 +37,17 @@ server.listen(config.port, function () {
     console.log('app listening at port %s', config.port);
 });
 
+
+
 const nsp = io.of('/pulse');
 
-
+global.nsp = nsp;
 nsp.on('connection',function(socket){
     socket.join('pulse');
-    setInterval(()=>{
-        nsp.emit('msg-event','message from pulse');
-    },1000)
+    notification.sendAllQuestions();
+    // setInterval(()=>{
+    //     nsp.emit('msg-event','message from pulse');
+    // },1000)
 })
 
 
