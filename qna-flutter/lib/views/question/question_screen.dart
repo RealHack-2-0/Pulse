@@ -26,6 +26,7 @@ class QuestionScreen extends StatelessWidget {
           ),
           Divider(),
         Answer(),
+        Answer(),
         ],
       ),
     );
