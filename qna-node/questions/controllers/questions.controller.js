@@ -1,6 +1,7 @@
 const QuestionModel = require('../models/questions.model');
 const BadWords = require('bad-words');
 var wordsFilter = new BadWords();
+const notification = require('../../socket/notification_socket');
 
 
 exports.insert = (req, res) => {
@@ -61,14 +62,14 @@ exports.upvoteQuestion = (req, res) => {
     QuestionModel.upvoteQuestion(req.params.id, req.jwt.userId)
         .then((result) => {
             res.status(204).send({});
-        });
+        }).then(()=>{notification.sendAllQuestions()});
 };
 
 exports.downvoteQuestion = (req, res) => {
     QuestionModel.downvoteQuestion(req.params.id, req.jwt.userId)
         .then((result) => {
             res.status(204).send({});
-        });
+        }).then(()=>{notification.sendAllQuestions});
 };
 
 // exports.removeById = (req, res) => {
