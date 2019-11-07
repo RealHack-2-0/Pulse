@@ -14,4 +14,8 @@ class Answers {
     await ServerManager()
         .post('answer/add/', AnswerModel.create(questionId, content));
   }
+
+  static Future<void> verifyAnswer(String questionId) async {
+    await ServerManager().post('answer/verify/', {"id": questionId});
+  }
 }

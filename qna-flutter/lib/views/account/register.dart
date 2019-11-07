@@ -59,10 +59,10 @@ class _RegisterFormState extends State<RegisterForm>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _buildTitle("Username"),
-                            _username,
-                            _buildTitle("Phone"),
-                            _phone,
+                            _buildTitle("First Name"),
+                            _firstName,
+                            _buildTitle("Last Name"),
+                            _lastName,
                             _buildTitle("Email"),
                             _email,
                             _buildTitle("Password"),
@@ -106,18 +106,34 @@ class _RegisterFormState extends State<RegisterForm>
           );
   }
 
-  Widget get _username => Padding(
+  Widget get _firstName => Padding(
         padding: const EdgeInsets.all(8.0),
         child: FormBuilderTextField(
           validators: [
             FormBuilderValidators.required(),
             FormBuilderValidators.minLength(4),
           ],
-          attribute: "username",
+          attribute: "firstName",
           maxLines: 1,
           decoration: InputDecoration(
-              helperText: "Username",
-              hintText: "Your Name",
+              helperText: "First Name",
+              hintText: "First",
+              border: OutlineInputBorder()),
+        ),
+      );
+
+  Widget get _lastName => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FormBuilderTextField(
+          validators: [
+            FormBuilderValidators.required(),
+            FormBuilderValidators.minLength(4),
+          ],
+          attribute: "lastName",
+          maxLines: 1,
+          decoration: InputDecoration(
+              helperText: "Last Name",
+              hintText: "Last",
               border: OutlineInputBorder()),
         ),
       );
@@ -135,23 +151,6 @@ class _RegisterFormState extends State<RegisterForm>
           decoration: InputDecoration(
               helperText: "Email",
               hintText: "email@website.com",
-              border: OutlineInputBorder()),
-        ),
-      );
-
-  Widget get _phone => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FormBuilderTextField(
-          validators: [
-            FormBuilderValidators.required(),
-            FormBuilderValidators.pattern(r"^\d{10}$"),
-          ],
-          keyboardType: TextInputType.phone,
-          attribute: "phone",
-          maxLines: 1,
-          decoration: InputDecoration(
-              helperText: "Phone Number",
-              hintText: "0771234567",
               border: OutlineInputBorder()),
         ),
       );
@@ -201,28 +200,34 @@ class _RegisterFormState extends State<RegisterForm>
 
   void _handleFormSubmit() async {
     _fbKey.currentState.save();
+    if (_fbKey.currentState.value['password'] !=
+        _fbKey.currentState.value['confirm_password']) {
+      Alert.showAlertBox(context, "Mismatching passwords");
+    }
     if (_fbKey.currentState.validate()) {
       setState(() {
         _isSaving = true;
       });
 
-      bool isLoggedIn = await Authentication.signup(
-          _fbKey.currentState.value['name'],
-          _fbKey.currentState.value['email'],
-          _fbKey.currentState.value['password'],
-          _fbKey.currentState.value['confirm_password'], (e) {
-        if (mounted) {
-          Alert.showAlertBox(context, e);
-        }
-      });
+      try {
+        await Authentication.signup(
+            _fbKey.currentState.value['firstName'],
+            _fbKey.currentState.value['lastName'],
+            _fbKey.currentState.value['email'],
+            _fbKey.currentState.value['password'], (e) {
+          if (mounted) {
+            Alert.showAlertBox(context, e);
+          }
+        });
+        AppNavigator.pushAsFirst(context, (_) => SplashScreen());
+      } catch (e) {
+        Alert.showAlertBox(context, "Registration failed");
+      }
 
       if (mounted) {
         setState(() {
           _isSaving = false;
         });
-        if (isLoggedIn) {
-          AppNavigator.pushAsFirst(context, (_) => SplashScreen());
-        }
       }
     }
   }

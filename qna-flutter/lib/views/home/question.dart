@@ -20,7 +20,7 @@ class QuestionView extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (_) => QuestionScreen(
-              question: question,
+              questionId: question.id,
             ),
           ),
         );

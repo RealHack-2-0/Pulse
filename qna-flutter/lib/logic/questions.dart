@@ -13,4 +13,10 @@ class Questions {
     await ServerManager()
         .post('questions/add/', QuestionModel.create(title, content));
   }
+
+  static Future<QuestionModel> getQuestion(String id) async {
+    Response r = await ServerManager().get('question/$id/');
+    Map<String, dynamic> map = Map<String, dynamic>.from(r.data);
+    return QuestionModel.fromMap(map);
+  }
 }

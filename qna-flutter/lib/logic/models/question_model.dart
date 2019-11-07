@@ -5,7 +5,7 @@ class QuestionModel {
   final String title;
   final String content;
   final String authorId;
-  final bool resolved;
+  bool resolved;
   final String correctAnswerId;
 
   int get votes => upvotes.length - downvotes.length;

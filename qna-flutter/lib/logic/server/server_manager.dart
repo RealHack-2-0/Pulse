@@ -7,6 +7,7 @@ class ServerManager {
   static const String _serverUrl = ServerEndpoints.EMULATOR_HOST_IP_ADDRESS;
   static ServerManager _repository;
   final ServerEndpoints _serverEndPoints;
+  String userId;
 
   factory ServerManager() {
     if (_repository == null) {
@@ -66,6 +67,9 @@ class ServerManager {
     if (response.statusCode == 201) {
       // Save token for future authorizations
       _serverEndPoints.authorizationToken = response.data['accessToken'];
+      userId = response.data['id'];
+      print("User: $userId");
+
       print("User $email logged in.");
       return true;
     } else {
