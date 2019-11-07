@@ -6,6 +6,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
       // bottomNavigationBar: BottomNavigationBar(),
       appBar: AppBar(
         title: Text("Stack Overflow Demo"),
@@ -13,25 +17,26 @@ class HomePage extends StatelessWidget {
       ),
       drawer: MyDrawer(),
       body: Container(
-          child: ListView(
-        children: <Widget>[
-          QuestionView(
-              title: "How to add a image to Firebase?",
-              subtitle: "10 minutes ago",
-              upVotes: 15,
-              downVotes: 3),
-          QuestionView(
-              title: "How to center a widget in Flutter?",
-              subtitle: "5 seconds ago",
-              upVotes: 9,
-              downVotes: 63),
-          QuestionView(
-              title: "Can it possible to have good life as a programmer?",
-              subtitle: "10 hours ago",
-              upVotes: 9,
-              downVotes: 3)
-        ],
-      )),
+        child: ListView(
+          children: <Widget>[
+            QuestionView(
+                title: "How to add a image to Firebase?",
+                subtitle: "10 minutes ago",
+                upVotes: 15,
+                downVotes: 3),
+            QuestionView(
+                title: "How to center a widget in Flutter?",
+                subtitle: "5 seconds ago",
+                upVotes: 9,
+                downVotes: 63),
+            QuestionView(
+                title: "Can it possible to have good life as a programmer?",
+                subtitle: "10 hours ago",
+                upVotes: 9,
+                downVotes: 3)
+          ],
+        ),
+      ),
     );
   }
 }
