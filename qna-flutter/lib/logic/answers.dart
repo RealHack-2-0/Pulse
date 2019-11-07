@@ -18,4 +18,12 @@ class Answers {
   static Future<void> verifyAnswer(String questionId) async {
     await ServerManager().post('answer/verify/', {"id": questionId});
   }
+
+  static Future<void> upvote(String questionId) async {
+    await ServerManager().post('question/$questionId/upvote', {});
+  }
+
+  static Future<void> downvote(String questionId) async {
+    await ServerManager().post('question/$questionId/downvote', {});
+  }
 }

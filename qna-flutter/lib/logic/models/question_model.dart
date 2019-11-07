@@ -1,3 +1,5 @@
+import 'package:qna_flutter/logic/server/server_manager.dart';
+
 class QuestionModel {
   final String id;
   final List<String> upvotes;
@@ -9,6 +11,10 @@ class QuestionModel {
   final String correctAnswerId;
 
   int get votes => upvotes.length - downvotes.length;
+
+  bool get hasUpvoted => upvotes.contains(ServerManager().userId);
+
+  bool get hasDownvoted => downvotes.contains(ServerManager().userId);
 
   QuestionModel(this.id, this.upvotes, this.downvotes, this.title, this.content,
       this.authorId, this.resolved, this.correctAnswerId);

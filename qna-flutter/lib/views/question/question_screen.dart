@@ -42,6 +42,27 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                      color: question.hasUpvoted ? Colors.amber : null,
+                      onPressed: () async {
+                        await Answers.upvote(question.id);
+                        setState(() {});
+                      },
+                      child: Text("Upvote"),
+                    ),
+                    RaisedButton(
+                      color: question.hasDownvoted ? Colors.amber : null,
+                      onPressed: () async {
+                        await Answers.downvote(question.id);
+                        setState(() {});
+                      },
+                      child: Text("Downvote"),
+                    )
+                  ],
+                ),
                 Divider(),
                 HandledFutureBuilder<List<AnswerModel>>(
                     future: Answers.getAnswers(question.id),
@@ -57,7 +78,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               ),
                               title: Text(answer.content),
                               subtitle: Text(answer.authorId),
-                              trailing: answer.authorId ==
+                              trailing: question.authorId ==
                                           ServerManager().userId &&
                                       !question.resolved
                                   ? IconButton(
