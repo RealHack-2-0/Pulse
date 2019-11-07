@@ -31,7 +31,8 @@ dependencies:
   image_picker: ^0.6.1+10
   uuid: ^2.0.2
   dio: any
-  flutter_socket_io: any
+  adhara_socket_io: ^0.4.1
+  # flutter_socket_io: any
   # url_launcher: ^5.2.5
 
 dev_dependencies:

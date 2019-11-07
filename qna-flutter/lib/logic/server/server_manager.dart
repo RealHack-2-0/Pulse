@@ -1,5 +1,6 @@
+import 'package:adhara_socket_io/manager.dart';
+import 'package:adhara_socket_io/options.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_socket_io/socket_io_manager.dart';
 
 import 'server_endpoints.dart';
 import 'server_exceptions.dart';
@@ -70,13 +71,19 @@ class ServerManager {
       _serverEndPoints.authorizationToken = response.data['accessToken'];
       userId = response.data['id'];
 
-      final socketIO =
-          SocketIOManager().createSocketIO(_serverUrl, '/pulse-group');
-      socketIO.init();
-      socketIO.subscribe("message", (msg) {
-        print(msg);
+      final manager = SocketIOManager();
+      final socket = await manager.createInstance(SocketOptions("$_serverUrl",
+          nameSpace: "/pulse",
+          enableLogging: true,
+          transports: [Transports.POLLING]));
+
+      socket.onConnect((s) {
+        print("Conntection:::::::: $s");
       });
-      socketIO.connect();
+      socket.on("msg-event", (data) {
+        print("NEWS: $data");
+      });
+      socket.connect();
 
       print("User: $userId");
 
