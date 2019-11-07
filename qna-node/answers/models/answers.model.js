@@ -56,6 +56,11 @@ exports.markAsAnswer = (id) => {
     })
 };
 
+
+exports.findByQuestionId = (id) => {
+    return Answer.find({ questionId: id });
+};
+
 // exports.list = (perPage, page) => {
 //     return new Promise((resolve, reject) => {
 //         Answer.find()

@@ -100,6 +100,24 @@ exports.downvoteQuestion = (id, userId) => {
     })
 };
 
+
+exports.addCorrectAnswer = (id, answerId) => {
+    return new Promise((resolve, reject) => {
+        Question.findById(id, function (err, question) {
+            if (err) reject(err);
+
+            question.correctAnswerId = answerId;
+            question.resolved = true;
+            question.save(function (err, updatedQuestion) {
+                if (err) return reject(err);
+                resolve(updatedQuestion);
+            });
+        });
+    })
+
+};
+
+
 // exports.removeById = (QuestionId) => {
 //     return new Promise((resolve, reject) => {
 //         Question.remove({ _id: QuestionId }, (err) => {

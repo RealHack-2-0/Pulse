@@ -7,6 +7,16 @@ exports.routesConfig = function (app) {
         ValidationMiddleware.validJWTNeeded,
         AnswersController.insert,
     ]);
+    app.post('/answer/verify', [
+        ValidationMiddleware.validJWTNeeded,
+        AnswersController.markAsAnswer,
+    ]);
+
+    app.get('/answers/:id', [
+        ValidationMiddleware.validJWTNeeded,
+        AnswersController.getByQuestionId,
+    ]);
+
     // app.get('/users', [
     //     ValidationMiddleware.validJWTNeeded,
     //     UsersController.list

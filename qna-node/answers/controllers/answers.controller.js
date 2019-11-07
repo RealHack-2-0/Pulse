@@ -1,4 +1,6 @@
 const AnswerModel = require('../models/answers.model');
+const QuestionModel = require('../../questions/models/questions.model');
+
 
 exports.insert = (req, res) => {
     // TODO: Offesive words censoring
@@ -44,6 +46,14 @@ exports.getByAuthorId = (req, res) => {
         });
 };
 
+
+exports.getByQuestionId = (req, res) => {
+    AnswerModel.findByQuestionId(req.params.id)
+        .then((result) => {
+            res.status(200).send(result);
+        });
+};
+
 exports.upvoteAnswer = (req, res) => {
     AnswerModel.upvoteAnswer(req.params.id, req.jwt.userId)
         .then((result) => {
@@ -57,6 +67,39 @@ exports.downvoteAnswer = (req, res) => {
             res.status(204).send({});
         });
 };
+
+exports.markAsAnswer = (req, res) => {
+
+    AnswerModel.findById(req.body.id)
+        .then((answer) => {
+            // console.log(answer.authorId);
+            // console.log(req.jwt.userId);
+            QuestionModel.findById(answer.questionId)
+                .then((question) => {
+                    console.log(question);
+                    console.log(req.jwt.userId);
+                    if (question.authorId == req.jwt.userId) {
+                        AnswerModel.markAsAnswer(req.body.id)
+                            .then(
+                                QuestionModel.addCorrectAnswer(answer.questionId, req.body.id))
+                            .then((result) => {
+                                res.status(204).send({});
+                            });
+                    }
+                })
+
+        })
+
+
+
+
+
+
+
+
+
+}
+
 
 // exports.removeById = (req, res) => {
 //     AnswerModel.removeById(req.params.userId)
