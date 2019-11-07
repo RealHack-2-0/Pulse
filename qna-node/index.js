@@ -37,7 +37,9 @@ server.listen(config.port, function () {
     console.log('app listening at port %s', config.port);
 });
 
-io.on('connection',function(socket){
+const nsp = io.of('/pulse-group');
+
+nsp.on('connection',function(socket){
     socket.join('pulse');
     setInterval(()=>{
         io.in('pulse').send('message from pulse');
