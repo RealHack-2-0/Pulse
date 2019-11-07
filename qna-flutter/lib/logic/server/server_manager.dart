@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_socket_io/socket_io_manager.dart';
 
 import 'server_endpoints.dart';
 import 'server_exceptions.dart';
@@ -68,6 +69,15 @@ class ServerManager {
       // Save token for future authorizations
       _serverEndPoints.authorizationToken = response.data['accessToken'];
       userId = response.data['id'];
+
+      final socketIO =
+          SocketIOManager().createSocketIO(_serverUrl, '/pulse-group');
+      socketIO.init();
+      socketIO.subscribe("message", (msg) {
+        print(msg);
+      });
+      socketIO.connect();
+
       print("User: $userId");
 
       print("User $email logged in.");
