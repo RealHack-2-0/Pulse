@@ -2,6 +2,10 @@ const config = require('./common/config/env.config.js');
 
 const express = require('express');
 const app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+
 const bodyParser = require('body-parser');
 
 const AuthorizationRouter = require('./authorization/routes.config');
@@ -29,6 +33,18 @@ QuestionsRouter.routesConfig(app);
 AnswersRouter.routesConfig(app);
 
 
-app.listen(config.port, function () {
+server.listen(config.port, function () {
     console.log('app listening at port %s', config.port);
 });
+
+io.on('connection',function(socket){
+    socket.join('pulse');
+    setInterval(()=>{
+        io.in('pulse').send('message from pulse');
+    },1000)
+})
+
+
+
+
+
