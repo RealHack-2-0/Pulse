@@ -42,14 +42,23 @@ server.listen(config.port, function () {
 const nsp = io.of('/pulse');
 
 
+
 global.nsp = nsp;
 nsp.on('connection',function(socket){
     socket.join('pulse');
-    notification.sendAllQuestions();
+    // notification.sendAllQuestions();
+    
     // setInterval(()=>{
     //     nsp.emit('msg-event','message from pulse');
     // },1000)
+});
+
+nsp.on('refreshed-question',function(data){
+    console.log(data);
 })
+
+
+
 
 
 
