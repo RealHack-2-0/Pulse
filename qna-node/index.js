@@ -6,6 +6,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 const QuestionModel = require('./questions/models/questions.model');
+const AnswerModel = require('./answers/models/answers.model');
 
 
 
@@ -53,9 +54,10 @@ nsp.on('connection',function(socket){
         console.log(data);
         QuestionModel.findById(data.id)
         .then((results)=>{
-        global.nsp.emit('refreshed_question',results);
+        socket.emit('refreshed-question',results);
         })
-    })
+    });
+    
     // notification.sendAllQuestions();
     
     // setInterval(()=>{
