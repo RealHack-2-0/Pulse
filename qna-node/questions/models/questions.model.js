@@ -69,10 +69,12 @@ exports.upvoteQuestion = (id, userId) => {
             if (question.downvotes.includes(userId)) {
                 var downvotes = Object.assign([], question.downvotes)
                 question.downvotes = downvotes.filter(vote => vote != userId);
+            }else{
+                if (!question.upvotes.includes(userId)) {
+                    question.upvotes.push(userId);
+                }
             }
-            if (!question.upvotes.includes(userId)) {
-                question.upvotes.push(userId);
-            }
+            
             question.save(function (err, updatedQuestion) {
                 if (err) return reject(err);
                 resolve(updatedQuestion);
@@ -88,10 +90,12 @@ exports.downvoteQuestion = (id, userId) => {
             if (question.upvotes.includes(userId)) {
                 var upvotes = Object.assign([], question.upvotes)
                 question.upvotes = upvotes.filter(vote => vote != userId);
+            }else{
+                if (!question.downvotes.includes(userId)) {
+                    question.downvotes.push(userId);
+                }
             }
-            if (!question.downvotes.includes(userId)) {
-                question.downvotes.push(userId);
-            }
+            
             question.save(function (err, updatedQuestion) {
                 if (err) return reject(err);
                 resolve(updatedQuestion);
