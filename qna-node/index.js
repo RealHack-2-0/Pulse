@@ -58,7 +58,7 @@ nsp.on('connection',function(socket){
         })
     });
     
-    // notification.sendAllQuestions();
+    notification.sendAllQuestions();
     
     // setInterval(()=>{
     //     nsp.emit('msg-event','message from pulse');
