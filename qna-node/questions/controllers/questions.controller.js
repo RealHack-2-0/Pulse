@@ -18,7 +18,7 @@ exports.insert = (req, res) => {
         QuestionModel.createQuestion(req.body)
         .then((result) => {
             res.status(201).send({ id: result._id });
-        });
+        }).then(()=>{notification.sendAllQuestions()});
     }else{
         res.status(201).send({});
     }
