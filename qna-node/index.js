@@ -5,6 +5,9 @@ const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+// const QuestionModel = 
+
+
 
 const bodyParser = require('body-parser');
 
@@ -46,6 +49,13 @@ const nsp = io.of('/pulse');
 global.nsp = nsp;
 nsp.on('connection',function(socket){
     socket.join('pulse');
+    socket.on('refreshed-question',function(data){
+        console.log(data);
+        QuestionModel.findById(data.id)
+        .then((results)=>{
+        global.nsp.emit('refreshed_question',results);
+        })
+    })
     // notification.sendAllQuestions();
     
     // setInterval(()=>{
@@ -53,9 +63,9 @@ nsp.on('connection',function(socket){
     // },1000)
 });
 
-nsp.on('refreshed-question',function(data){
-    console.log(data);
-})
+// nsp.on('refreshed-question',function(data){
+//     console.log(data);
+// })
 
 
 

@@ -69,7 +69,7 @@ exports.downvoteQuestion = (req, res) => {
     QuestionModel.downvoteQuestion(req.params.id, req.jwt.userId)
         .then((result) => {
             res.status(204).send({});
-        }).then(()=>{notification.sendAllQuestions});
+        }).then(()=>{notification.sendAllQuestions()});
 };
 
 // exports.removeById = (req, res) => {
