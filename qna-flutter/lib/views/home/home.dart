@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:qna_flutter/logic/authentication.dart';
 import 'package:qna_flutter/logic/models/question_model.dart';
 import 'package:qna_flutter/logic/questions.dart';
 import 'package:qna_flutter/logic/server/server_endpoints.dart';
@@ -37,6 +38,7 @@ class _HomePageState extends State<HomePage> {
           message: "Answer was submitted just now for this question",
           duration: Duration(seconds: 10),
           mainButton: FlatButton(
+            textColor: Colors.white,
             child: Text("Show"),
             onPressed: () {
               Navigator.push(
@@ -87,7 +89,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Stack Overflow Demo"),
+        title: Text("QnA"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
@@ -98,7 +100,46 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            HandledFutureBuilder<Map<String, dynamic>>(
+                future: Authentication.getUserData(ServerManager().userId),
+                builder: (context, user) {
+                  return UserAccountsDrawerHeader(
+                    currentAccountPicture: CircleAvatar(
+                      child: Text(
+                        "${user["firstName"][0]}",
+                        style: TextStyle(fontSize: 32),
+                      ),
+                    ),
+                    accountEmail: Text(user["email"]),
+                    accountName:
+                        Text("${user["firstName"]} ${user["lastName"]}"),
+                  );
+                }),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Question"),
+              subtitle: Text("Add a new question"),
+              onTap: () async {
+                await Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => CreateQuestionView()));
+                setState(() {});
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text("Logout"),
+              subtitle: Text("Exit from the app"),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => SplashScreen()));
+              },
+            ),
+          ],
+        ),
+      ),
       body: Container(
         child: HandledStreamBuilder<List<QuestionModel>>(
             stream: _streamController.stream,

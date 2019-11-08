@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:qna_flutter/logic/server/server_manager.dart';
 
 typedef void OnError(dynamic error);
@@ -11,6 +12,13 @@ class Authentication {
       onError(e);
       return false;
     }
+  }
+
+  static Future<Map<String, dynamic>> getUserData(String id) async {
+    Response r = await ServerManager().get('user/$id/');
+    Map<String, dynamic> map = Map<String, dynamic>.from(r.data);
+    print(map);
+    return map;
   }
 
   static Future<void> signup(
