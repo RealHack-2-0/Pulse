@@ -65,6 +65,7 @@ flutter:
    - assets/images/Unknown.jpg
    - assets/images/crowd.jpg
    - assets/images/That_Poppy_profile_picture.jpg
+   - assets/images/QnA.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

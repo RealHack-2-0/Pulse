@@ -48,8 +48,8 @@ class _LoginFormState extends State<LoginForm> {
               .copyWith(primaryColor: Theme.of(context).accentColor),
           child: ListView(
             children: <Widget>[
-              Image.network(
-                "https://www.logogenie.net/download/preview/medium/3589659",
+              Image.asset(
+                "assets/images/QnA.png",
                 height: MediaQuery.of(context).size.height * 0.3,
                 fit: BoxFit.contain,
               ),
